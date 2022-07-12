@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:padigos_midtermexam_shoppingapp/models/cart.dart';
+import 'package:padigos_midtermexam_shoppingapp/models/cart_update.dart';
 import 'package:padigos_midtermexam_shoppingapp/models/product.dart';
 import 'dart:convert' as convert;
 
@@ -87,5 +88,27 @@ class ApiService {
       return product;
     }
     return product;
+  }
+
+  Future<void> updateCart(int cartId, int productId) async {
+    final cartUpdate =
+        CartUpdate(userId: cartId, date: DateTime.now(), products: [
+      {'productId': productId, 'quantity': 1}
+    ]);
+
+    final headers = {
+      'Content-type': 'application/json',
+    };
+
+    final response = await http
+        .put(Uri.parse('$baseUrl/carts/$cartId'),
+            headers: headers, body: convert.jsonEncode(cartUpdate.toJson()))
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = convert.jsonDecode(data.body);
+        print(data.statusCode);
+        print(jsonData);
+      }
+    }).catchError((err) => print(err));
   }
 }
