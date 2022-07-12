@@ -62,7 +62,7 @@ class ApiService {
   //categories
   Future<List<String>> getAllCategories() async {
     final categories = <String>[];
-    final response = await http.get(Uri.parse('$baseUrl/categories'));
+    final response = await http.get(Uri.parse('$baseUrl/products/categories'));
     if (response.statusCode == 200) {
       final jsonData = convert.jsonDecode(response.body);
       for (var item in jsonData) {
@@ -71,5 +71,21 @@ class ApiService {
       return categories;
     }
     return categories;
+  }
+
+  Future<List<Product>> getProductsByCategory(String categoryName) async {
+    final product = <Product>[];
+    final response =
+        await http.get(Uri.parse('$baseUrl/products/category/$categoryName'));
+    if (response.statusCode == 200) {
+      final jsonData = convert.jsonDecode(response.body);
+      for (var item in jsonData) {
+        if (item['category'] == categoryName) {
+          product.add(Product.fromJson(item));
+        }
+      }
+      return product;
+    }
+    return product;
   }
 }
