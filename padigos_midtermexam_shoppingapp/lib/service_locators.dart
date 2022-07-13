@@ -5,5 +5,4 @@ final locator = GetIt.instance;
 
 void setupLocators() {
   locator.registerSingleton<ApiService>(ApiService());
-  // service.registerSingleton<AuthController>(AuthController());
 }

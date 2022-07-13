@@ -100,15 +100,12 @@ class ApiService {
       'Content-type': 'application/json',
     };
 
-    final response = await http
-        .put(Uri.parse('$baseUrl/carts/$cartId'),
-            headers: headers, body: convert.jsonEncode(cartUpdate.toJson()))
-        .then((data) {
-      if (data.statusCode == 200) {
-        final jsonData = convert.jsonDecode(data.body);
-        print(data.statusCode);
-        print(jsonData);
-      }
-    }).catchError((err) => print(err));
+    final response = await http.put(Uri.parse('$baseUrl/carts/$cartId'),
+        headers: headers, body: convert.jsonEncode(cartUpdate.toJson()));
+    if (response.statusCode == 200) {
+      final jsonData = convert.jsonDecode(response.body);
+      print(response.statusCode);
+      print(jsonData);
+    }
   }
 }
